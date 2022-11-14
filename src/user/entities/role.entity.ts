@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { UserGroup } from './userGroup.entity';
+import { UserGroup } from './usergroup.entity';
 
 @Entity({ name: 'role' })
 export class Role {
@@ -7,7 +7,7 @@ export class Role {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column({ type: 'text', comment:'역활명'})
+    @Column({ type: 'text', comment: '역활명' })
     roleName: string;
 
     @OneToMany(() => UserGroup, (user) => user.id)

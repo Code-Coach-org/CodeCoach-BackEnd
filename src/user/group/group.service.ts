@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserGroup } from '../entities/userGroup.entity';
+import { UserGroup } from '../entities/usergroup.entity';
 import { RoleService } from '../role/role.service';
 import { UsersService } from '../user.service';
 
@@ -16,16 +16,16 @@ export class GroupService {
         private readonly usersService: UsersService,
     ) { }
 
-    async create(roleName: string, id:number) {
+    async create(roleName: string, id: number) {
         const rid = await this.roleService.getId(roleName)
         const uid = await this.usersService.findOne(id)
         console.log('Rid = ' + rid + ' ' + 'Uid = ' + uid)
         const group = await this.userGroupRepository.createQueryBuilder()
             .insert()
             .into('usergroup')
-            .values({ 
+            .values({
                 userId: uid.id,
-                roleId: rid 
+                roleId: rid
             })
             .execute();
         return group

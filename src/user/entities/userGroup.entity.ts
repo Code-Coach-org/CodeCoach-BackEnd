@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToO
 import { Role } from './role.entity';
 import { User } from './user.entity';
 
-@Entity({ name: 'userGroup' })
+@Entity({ name: 'usergroup' })
 export class UserGroup {
 
     @PrimaryGeneratedColumn('increment')

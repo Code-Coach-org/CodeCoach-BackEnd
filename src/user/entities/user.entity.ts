@@ -1,8 +1,8 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { UserGroup } from './userGroup.entity';
+import { UserGroup } from './usergroup.entity';
 
 @Entity({ name: 'user' })
-export class User{
+export class User {
 
     @PrimaryGeneratedColumn('increment')
     id: number;
@@ -42,4 +42,5 @@ export class User{
 
     @DeleteDateColumn({ name: 'delete_at', comment: '삭제일' })
     deletedAt?: Date | null;
+
 }

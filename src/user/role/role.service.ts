@@ -17,7 +17,7 @@ export class RoleService {
     async getId(roleName:string) {
         const find = await this.RoleRepository.findOneBy({roleName})
         if (!find) {
-            throw new NotFoundException(`해당 역활이 없습니다.`)
+            throw new NotFoundException(`해당 역할이 없습니다.`)
         } else {
             console.log(find.id)
             return find.id;
