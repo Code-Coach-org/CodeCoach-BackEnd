@@ -19,20 +19,18 @@ export class BoardController {
         })
     }
 
-    // TODO::Multer Option
     @Post('create/article')
     @UseInterceptors(FileInterceptor('file', multerDiskDestinationOutOptions))
-    createArticle (
-        @UploadedFile() file: Express.Multer.File,
-        // @Body() createArticleDto
+    createArticle(
+        @Body() createArticleDto: CreateArticleDto,
+        @UploadedFile() file: Express.Multer.File
     ) {
-        // console.log(createArticleDto);
+        console.log(createArticleDto);
+        console.log(file);
         return this.boardService.uploadFileDiskDestination(file);
         // return this.userService.uploadFileDiskDestination(userId, files)
     }
 
-    // @Post('create/article')
-    // async createArticle(@Body() createArticleDto) 
 
     @Get(':boardId/:articleId')
     async viewArticleById(

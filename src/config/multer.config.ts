@@ -30,7 +30,7 @@ export const multerDiskDestinationOutOptions = {
   limits: {
     fieldNameSize: 200,
     filedSize: 1024 * 1024,
-    fields: 2,
+    fields: 10,
     fileSize: 16777216,
     files: 10,
   },

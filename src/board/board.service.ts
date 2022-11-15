@@ -6,9 +6,9 @@ import { CreateBoardDto } from './dto/request/create-board.dto';
 import { ViewArticleByIdDto } from './dto/request/view-article-by-id.dto';
 import { Article } from './entities/article.entity';
 import { Board } from './entities/board.entity';
-import * as fs from 'fs';
-import { extname } from 'path';
 import { uploadFileURL } from 'src/config/multer.config';
+import { extname } from 'path';
+import * as fs from 'fs';
 
 @Injectable()
 export class BoardService {
