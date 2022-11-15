@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateArticleDto } from './dto/request/create-article.dto';
 import { CreateBoardDto } from './dto/request/create-board.dto';
 import { ViewArticleByIdDto } from './dto/request/view-article-by-id.dto';
 import { Article } from './entities/article.entity';
 import { Board } from './entities/board.entity';
+import * as fs from 'fs';
+import { extname } from 'path';
+import { uploadFileURL } from 'src/config/multer.config';
 
 @Injectable()
 export class BoardService {
@@ -32,6 +36,31 @@ export class BoardService {
                 id: articleId
             }
         });
+    }
+
+    uploadFileDiskDestination(file: Express.Multer.File): string {
+        
+        // TODO::게시판별 폴더 생성
+        const uploadFilePath = `uploads`;
+        // 폴더가 존재하지 않을 시 생성
+
+        if (!fs.existsSync(uploadFilePath)) {
+            fs.mkdirSync(uploadFilePath);
+        }
+
+        console.log(file.filename);
+
+        //파일 이름
+        const fileName = Date.now() + extname(file.filename);
+        //파일 업로드 경로
+        const uploadPath =
+        __dirname + `/../../${uploadFilePath + '/' + fileName}`;
+
+        //파일 생성
+        fs.writeFileSync(uploadPath, file.path);
+
+        return uploadFileURL(uploadFilePath + '/' + fileName);
+
     }
 
 }
