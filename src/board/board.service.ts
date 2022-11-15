@@ -14,6 +14,8 @@ export class BoardService {
         await this.boardRepository.save(createBoardDto);
     }
 
-
+    async Validate(value: string): Promise<boolean> {
+        return await this.boardRepository.countBy({name: value}) ? false : true;
+    }
 
 }
