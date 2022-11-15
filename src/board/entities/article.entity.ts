@@ -37,8 +37,11 @@ export class Article {
     view!: number;
 
     @ManyToOne(type => User, user => user.userId)
-    @JoinColumn({ name: 'id' })
+    @JoinColumn({ name: 'userId' })
     user!: User;
+
+    @Column({ nullable: false, unsigned: true })
+    userId!: number;
 
     @ManyToOne(type => Board, board => board.boardId)
     @JoinColumn({ name: 'boardId' })
