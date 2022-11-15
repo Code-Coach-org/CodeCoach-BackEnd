@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
+import { BoardModule } from './board/board.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
-    UsersModule,
     TypeOrmModule.forRoot({
       type: 'mariadb',
       host: process.env.DB_HOST,
@@ -15,7 +15,9 @@ import { UsersModule } from './users/users.module';
       synchronize: true,
       logging: true,
       entities: [__dirname + '/**/entities/*.entity.{js,ts}']
-    }),],
+    }),
+    BoardModule,
+    RoleModule],
   controllers: [],
   providers: [],
 })

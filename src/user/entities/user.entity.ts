@@ -1,10 +1,11 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { UserGroup } from './usergroup.entity';
 
 @Entity({ name: 'user' })
 export class User {
 
     @PrimaryGeneratedColumn('increment')
+    @PrimaryColumn({unsigned: true})
     id: number;
 
     @Column({ type: 'varchar', length: 5, comment: '이름' })

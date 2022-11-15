@@ -7,8 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as jwt from 'jsonwebtoken'
 import * as nodeMailer from 'nodemailer'
-import { RoleService } from './role/role.service';
-import { GroupService } from './group/group.service';
+// import { RoleService } from '../role/role.service';
+// import { GroupService } from './group/group.service';
 
 
 @Injectable()
@@ -23,12 +23,13 @@ export class UsersService {
   async verifyEamil(email: string): Promise<string> {
     this.authNum = Math.random().toString().substring(2, 6);
     const find = await this.usersRepository.findOneBy({ email })
-    if(!find) {
+    if (!find) {
       const transporter = nodeMailer.createTransport({
         service: 'gmail',
-        auth: { 
-          user: 'lap721181@gmail.com', 
-          pass: 'gmkirsyjsmollqnw' },
+        auth: {
+          user: 'lap721181@gmail.com',
+          pass: 'gmkirsyjsmollqnw'
+        },
       })
 
       const mailOptions = {
@@ -48,7 +49,7 @@ export class UsersService {
   }
 
   async checkNum(verifyKey: string) {
-    if(this.authNum === verifyKey) {
+    if (this.authNum === verifyKey) {
       return true
     } else {
       return false
