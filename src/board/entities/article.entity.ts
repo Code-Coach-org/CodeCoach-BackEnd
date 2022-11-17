@@ -36,12 +36,13 @@ export class Article {
     })
     view!: number;
 
-    @ManyToOne(type => User, user => user.userId)
-    @JoinColumn({ name: 'userId' })
-    user!: User;
+    // TODO :: 유저 작업 끝나면 업데이트
+    // @ManyToOne(type => User, user => user.userId)
+    // @JoinColumn({ name: 'userId' })
+    // user!: User;
 
-    @Column({ nullable: false, unsigned: true })
-    userId!: number;
+    // @Column({ nullable: false, unsigned: true })
+    // userId!: number;
 
     @ManyToOne(type => Board, board => board.boardId)
     @JoinColumn({ name: 'boardId' })

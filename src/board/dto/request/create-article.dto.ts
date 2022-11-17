@@ -8,7 +8,7 @@ export class CreateArticleDto extends PickType(BaseBoardDto, ['boardId']) {
     @Length(0, 30)
     title: string;
 
-    @IsNumber()
-    id: number;
+    @IsString()
+    content: string;
 
 }
