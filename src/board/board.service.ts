@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/request/create-article.dto';
@@ -51,6 +51,9 @@ export class BoardService {
 
     async DeleteArticleById(deleteArticleByIdDto: DeleteArticleByIdDto) {
         const { articleId } = deleteArticleByIdDto;
+        if (!await this.articleRepository.countBy({ id: articleId })) {
+            throw new NotFoundException("게시글을 찾을 수 없습니다.");
+        }
         await this.articleRepository.delete({ id: articleId });
     }
 

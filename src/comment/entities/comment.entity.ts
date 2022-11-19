@@ -3,28 +3,29 @@ import { User } from 'src/user/entities/user.entity';
 import { Article } from 'src/board/entities/article.entity';
 
 @Entity({ name: 'comment' })
-export class CommentEntity {
+export class Comment {
 
     @PrimaryGeneratedColumn('increment')
     @PrimaryColumn({ unsigned: true })
     commentId!: number;
 
-    @ManyToOne(type => User, user => user.userId)
-    @JoinColumn({ name: 'userId' })
-    user!: User;
+    // TODO :: User 업데이트시 추가
+    // @ManyToOne(type => User, user => user.userId)
+    // @JoinColumn({ name: 'userId' })
+    // user!: User;
 
-    @Column({ nullable: false, unsigned: true })
-    userId!: number;
+    // @Column({ nullable: false, unsigned: true })
+    // userId!: number;
 
     @ManyToOne(type => Article)
-    @JoinColumn({ name: 'postId' })
-    post!: Article;
+    @JoinColumn({ name: 'articleId' })
+    article!: Article;
 
     @Column({ 
         nullable: false, 
         unsigned: true 
     })
-    postId!: number;
+    articleId!: number;
 
     @Column({
         unsigned: true
@@ -40,7 +41,7 @@ export class CommentEntity {
         nullable: true,
         unsigned: true
     })
-    parentId!: number | null;
+    parentId?: number | null;
 
     @CreateDateColumn()
     createdAt!: Date;

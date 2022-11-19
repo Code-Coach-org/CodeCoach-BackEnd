@@ -38,7 +38,7 @@ export class BoardController {
     async deleteArticleById(
         @Body() deleteArticleByIdDto: DeleteArticleByIdDto 
     ) {
-        this.boardService.DeleteArticleById(deleteArticleByIdDto);
+        await this.boardService.DeleteArticleById(deleteArticleByIdDto);
         return Object.assign({
             Message: "게시글이 삭제되었습니다.",
             success: true
