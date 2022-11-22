@@ -10,6 +10,9 @@ export class CommentService {
     constructor(@InjectRepository(Comment) private commentRepository: Repository<Comment>) { }
 
     async CreateComment(createCommentDto: CreateCommentDto): Promise<void> {
+        const { articleId, parentId } = createCommentDto;
+        if (!this.commentRepository.countBy({ articleId: articleId })) throw new NotFoundException("게시판을 찾을 수 없습니다.");
+        if (!this.commentRepository.countBy({ commentId: parentId })) throw new NotFoundException("부모댓글을 찾을 수 없습니다.");
         await this.commentRepository.save({
             ...createCommentDto,
             depth: 1

@@ -21,6 +21,12 @@ export class Comment {
     @JoinColumn({ name: 'articleId' })
     article!: Article;
 
+    @Column({
+        type: Boolean,
+        default: false
+    })
+    deleted!: boolean;
+
     @Column({ 
         nullable: false, 
         unsigned: true 
