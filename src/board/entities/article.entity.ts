@@ -7,47 +7,49 @@ export class Article {
 
     @PrimaryGeneratedColumn('increment')
     @PrimaryColumn({ unsigned: true })
-    id: number;
+    id!: number;
 
     @Column({
         type: 'varchar',
         length: 30,
         comment: '제목'
     })
-    title: string;
+    title!: string;
 
     @Column({
         type: 'mediumtext',
         comment: '내용'
     })
-    content: string;
+    content?: string;
 
     @Column({
         type: 'varchar',
         length: 100,
         comment: '배너 이미지'
     })
-    image: string;
+    image?: string;
 
     @Column({
         type: 'int',
-        comment: '조회수'
+        comment: '조회수',
+        default: 0
     })
-    view: number;
+    view!: number;
 
-    @ManyToOne(type => User, user => user.userId)
-    @JoinColumn({ name: 'userId' })
-    user: User;
+    // TODO :: 유저 작업 끝나면 업데이트
+    // @ManyToOne(type => User, user => user.userId)
+    // @JoinColumn({ name: 'userId' })
+    // user!: User;
 
-    @Column({ nullable: false, unsigned: true })
-    userId: number;
+    // @Column({ nullable: false, unsigned: true })
+    // userId!: number;
 
     @ManyToOne(type => Board, board => board.boardId)
     @JoinColumn({ name: 'boardId' })
-    board: Board;
+    board!: Board;
 
     @Column({ nullable: false, unsigned: true })
-    boardId: number;
+    boardId!: number;
 
     @CreateDateColumn({ name: 'create_at', comment: '생성일' })
     createdAt: Date;

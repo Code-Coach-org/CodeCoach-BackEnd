@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardModule } from './board/board.module';
 import { RoleModule } from './role/role.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { RoleModule } from './role/role.module';
       entities: [__dirname + '/**/entities/*.entity.{js,ts}']
     }),
     BoardModule,
-    RoleModule],
+    RoleModule,
+    CommentModule],
   controllers: [],
   providers: [],
 })
