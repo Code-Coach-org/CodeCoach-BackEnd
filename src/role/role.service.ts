@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';;
-import * as bcrypt from 'bcrypt';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as jwt from 'jsonwebtoken'
@@ -19,7 +18,8 @@ export class RoleService {
         if (!find) {
             throw new NotFoundException(`해당 역할이 없습니다.`)
         } else {
-            return find.roleId;
+            console.log(find.id)
+            return find.id;
         }
     }
 }

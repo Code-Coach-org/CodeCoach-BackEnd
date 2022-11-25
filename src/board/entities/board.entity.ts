@@ -1,7 +1,7 @@
 import { User } from 'src/user/entities/user.entity';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
-@Entity({ name: 'board' })
+@Entity({ name: 'board'})
 @Unique(['name'])
 export class Board {
 

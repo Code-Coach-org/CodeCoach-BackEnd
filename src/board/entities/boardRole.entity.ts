@@ -8,29 +8,29 @@ export class BoardRole {
 
     @PrimaryGeneratedColumn('increment')
     @PrimaryColumn({ unsigned: true })
-    id!: number;
+    id: number;
 
     @ManyToOne(
         () => Role,
         (role) => role.roleId,
     )
     @JoinColumn({ name: 'roleId' })
-    role!: Role;
+    role: Role;
 
     @Column({ nullable: false, unsigned: true })
-    roleId!: number;
+    roleId: number;
 
     @ManyToOne(type => Board, board => board.boardId)
     @JoinColumn({ name: 'boardId' })
-    board!: Board;
+    board: Board;
 
     @Column({ nullable: false, unsigned: true })
-    boardId!: number;
+    boardId: number;
 
     @Column({ type: 'text', comment: '권한 종류' })
-    authority!: string;
+    authority: string;
 
     @CreateDateColumn({ name: 'create_at', comment: '생성일' })
-    createdAt!: Date;
+    createdAt: Date;
 
 }

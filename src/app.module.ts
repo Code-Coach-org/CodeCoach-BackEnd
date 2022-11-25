@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { BoardModule } from './board/board.module';
-import { RoleModule } from './role/role.module';
-import { CommentModule } from './comment/comment.module';
+import { UsersModule } from './user/user.module';
+import { GroupModule } from './group/group.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mariadb',
       host: process.env.DB_HOST,
@@ -13,14 +17,14 @@ import { CommentModule } from './comment/comment.module';
       username: process.env.DB_USER,
       password: process.env.DB_PW,
       database: process.env.DB_NAME,
-      synchronize: true,
+      synchronize: false,
       logging: true,
       entities: [__dirname + '/**/entities/*.entity.{js,ts}']
     }),
     BoardModule,
-    RoleModule,
-    CommentModule],
-  controllers: [],
-  providers: [],
+    UsersModule,
+    GroupModule],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule { }

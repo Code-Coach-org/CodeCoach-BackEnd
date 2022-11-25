@@ -1,18 +1,18 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { UserGroup } from '../../user/entities/usergroup.entity';
+import { UserGroup } from '../../group/entities/userGroup.entity';
 
 @Entity({ name: 'role' })
 export class Role {
 
     @PrimaryGeneratedColumn('increment')
     @PrimaryColumn({ unsigned: true })
-    roleId: number;
+    id: number;
 
     @Column({ type: 'text', comment: '역할명' })
     roleName: string;
 
-    @OneToMany(() => UserGroup, (user) => user.id)
-    userId: UserGroup[];
+    @OneToMany(() => UserGroup, (userGroup) => userGroup.role)
+    roleId: UserGroup[];
 
     @CreateDateColumn({ name: 'create_at', comment: '생성일' })
     createdAt: Date;
