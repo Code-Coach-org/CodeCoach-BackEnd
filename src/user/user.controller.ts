@@ -54,20 +54,39 @@ export class UsersController {
   }
 
   @Post('/login')
-  async login(@Body('email') email: string, @Body('password') password: string, @Res() Response) {
-    const token = await this.usersService.login(email, password);
-    console.log(token)
+  async login(@Body('email') email: string, @Body('password') password: string, @Res() res) {
+    const token = await this.usersService.login(email, password)
     if (!token) {
-      return Object.assign({
+      return res.json({
         success: false,
         massage: '로그인을 실패하였습니다.'
       })
-    } else if (token === 'success') {
-      return Response.json({
+    } else if (typeof token === 'string') {
+      res.cookie("user_auth", token)
+      return res.json({
+        token : token,
         success: true,
         massage: '로그인이 완료되었습니다.'
       })
     }
+  }
+
+  @Get('/isLogin')
+  async isLogin(@Req() req) {
+    const token = req.cookies.user_auth
+    console.log(token)
+    if(!token) {
+      return Object.assign({
+        success: false,
+        massage: '로그인을 하시고 서비스를 이용하여 주시기 바랍니다.'
+      })
+    } else {
+      return Object.assign({
+        success: true,
+        massage: '로그인 인증 완료'
+      })
+    }
+
   }
 
   @Get('findAll')

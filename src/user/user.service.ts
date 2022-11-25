@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as nodeMailer from 'nodemailer'
-import AWS from 'aws-sdk';
+import * as jwt from 'jsonwebtoken'
 
 
 @Injectable()
@@ -79,8 +79,11 @@ export class UsersService {
     } else {
       const hashedPassword = find.password
       const isPassword = await bcrypt.compare(pwd, hashedPassword);
-      if(isPassword) {
-        return 'success';
+      if(isPassword) {    
+        const token = jwt.sign(find.userName, 'secretToken')
+        return token;
+      } else {
+        console.log('error')
       }
     }
   }
