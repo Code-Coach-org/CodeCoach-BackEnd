@@ -1,17 +1,13 @@
 import * as dotenv from 'dotenv';
-dotenv.config({ path: '.env' });
-import { join } from 'path';
+dotenv.config({path: '.env'});
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { useContainer } from 'class-validator';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(
-    AppModule
-  );
-  app.enableCors();
+  const app = await NestFactory.create(AppModule);  
+  app.enableCors()
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -23,14 +19,8 @@ async function bootstrap() {
     })
   );
   app.setGlobalPrefix('api');
-  useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  app.useStaticAssets(
-    join(__dirname, '..', 'uploads'),
-    {
-      prefix: '/uploads/',
-    }
-  );
-  await app.listen(process.env.SERVER_PORT);
+  app.use(cookieParser());
+  await app.listen(3000);
 }
 
 bootstrap();

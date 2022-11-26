@@ -5,10 +5,8 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as jwt from 'jsonwebtoken'
 import * as nodeMailer from 'nodemailer'
-// import { RoleService } from '../role/role.service';
-// import { GroupService } from './group/group.service';
+import * as jwt from 'jsonwebtoken'
 
 
 @Injectable()
@@ -23,12 +21,12 @@ export class UsersService {
   async verifyEamil(email: string): Promise<string> {
     this.authNum = Math.random().toString().substring(2, 6);
     const find = await this.usersRepository.findOneBy({ email })
-    if (!find) {
+    if(!find) {
       const transporter = nodeMailer.createTransport({
         service: 'gmail',
-        auth: {
-          user: 'lap721181@gmail.com',
-          pass: 'gmkirsyjsmollqnw'
+        auth: { 
+          user: process.env.EMAIL,
+          pass: process.env.PASS 
         },
       })
 
@@ -49,7 +47,7 @@ export class UsersService {
   }
 
   async checkNum(verifyKey: string) {
-    if (this.authNum === verifyKey) {
+    if(this.authNum === verifyKey) {
       return true
     } else {
       return false
@@ -61,15 +59,33 @@ export class UsersService {
     const { userName, email, password, phone } = createUserDto
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-    const hashedPhone = await bcrypt.hash(phone, salt);
     const user = this.usersRepository.create({
       userName,
       email,
       password: hashedPassword,
-      phone: hashedPhone
+      phone
     })
     await this.usersRepository.save(user);
     return user
+  }
+
+  async login(email: string, pwd: string) {
+    if (typeof email !== "string" && typeof pwd !== "string") {
+      return false;
+    }
+    const find = await this.usersRepository.findOneBy({email})
+    if (!find) {
+      throw new NotFoundException(`Can't find`)
+    } else {
+      const hashedPassword = find.password
+      const isPassword = await bcrypt.compare(pwd, hashedPassword);
+      if(isPassword) {    
+        const token = jwt.sign(find.userName, 'secretToken')
+        return token;
+      } else {
+        console.log('error')
+      }
+    }
   }
 
   async findAll(): Promise<User[]> {
@@ -77,21 +93,94 @@ export class UsersService {
   }
 
   async findOne(id: number): Promise<User> {
-    const find = await this.usersRepository.findOneBy({ id })
+    const find = await this.usersRepository.findOneBy({id})
     if (!find) {
-      throw new NotFoundException(`Can't find Board with id ${id}`)
+      throw new NotFoundException(`Can't find ${id}`)
     } else {
       return find;
     }
   }
 
-  async remove(id: number): Promise<void> {
-    const del = await this.usersRepository.delete(id);
-    console.log(del);
+  async newPassword(email: string) {
+    const temPwd = 'temporaryPassword';
+    const find = await this.usersRepository.findOneBy({ email })
+    find.password = temPwd;
+    await this.usersRepository.save(find);
+    if (find) {
+      const transporter = nodeMailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASS
+        },
+      })
+
+      const mailOptions = {
+        to: email,
+        subject: '비밀번호 찾기',
+        html:
+          `<p style='color: black'>임시 비밀번호를 발송합니다.</p>
+        <p style = 'color:black'>아래의 임시 비밀번호로 로그인 하시고, 설정에서 로그인을 바꿔주세요.</p>
+        <h2>${temPwd}</h2>`,
+      }
+      await transporter.sendMail(mailOptions)
+      return temPwd;
+    } else {
+      return 'error'
+    }
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<any> {
-    console.log(updateUserDto);
-    return await this.usersRepository.update(id, updateUserDto);
+  async updateUserName(userName: string, email: string) {
+    const find = await this.usersRepository.findOneBy({ email })
+    if (find) {
+      find.userName = userName;
+      await this.usersRepository.save(find);
+      return find
+    } else {
+      return 'error'
+    }
+  }
+
+  async updateNickName(nickName: string, email: string) {
+    const find = await this.usersRepository.findOneBy({ email })
+    if (find) {
+      find.nickName = nickName;
+      await this.usersRepository.save(find);
+      return find
+    } else {
+      return 'error'
+    }
+  }
+
+  async updatePhone(phone: string, email: string) {
+    const find = await this.usersRepository.findOneBy({ email })
+    if (find) {
+      find.phone = phone;
+      await this.usersRepository.save(find);
+      return find
+    } else {
+      return 'error'
+    }
+  }
+
+  async updateProfile(location: string, id: number) {
+    const find = await this.usersRepository.findOneBy({id})
+    find.profile = location
+    console.log(find.profile)
+    await this.usersRepository.save(find)
+  }
+
+  async updatePwd(pwd: string, email: string) {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(pwd, salt);
+    const find = await this.usersRepository.findOneBy({ email })
+    console.log(find)
+    if (find) {
+      find.password = hashedPassword
+      await this.usersRepository.save(find);
+      return find
+    } else {
+      return 'error'
+    }
   }
 }

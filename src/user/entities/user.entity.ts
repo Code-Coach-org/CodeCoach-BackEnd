@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { UserGroup } from './usergroup.entity';
+import { UserGroup } from '../../group/entities/userGroup.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -32,7 +32,7 @@ export class User {
     @Column({ type: 'int', comment: '유저 레벨', default: null })
     level: number;
 
-    @OneToMany(() => UserGroup, (user) => user.id)
+    @OneToMany(() => UserGroup, (userGroup) => userGroup.user)
     userId: UserGroup[];
 
     @CreateDateColumn({ name: 'create_at', comment: '생성일' })
