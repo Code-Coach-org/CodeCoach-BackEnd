@@ -20,6 +20,9 @@ export class User {
     @Column({ type: 'varchar', length: 20, comment: '유저 별명', default: null })
     nickName: string;
 
+    @Column({ type: 'varchar', length: 250 , comment: '유저 레벨', default: null })
+    token : string;
+
     @Column({ type: 'varchar', length: 250, comment: '프로필 이미지', default: null })
     profile: string;
 

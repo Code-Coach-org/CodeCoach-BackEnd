@@ -81,6 +81,8 @@ export class UsersService {
       const isPassword = await bcrypt.compare(pwd, hashedPassword);
       if(isPassword) {    
         const token = jwt.sign(find.userName, 'secretToken')
+        find.token = token
+        await this.usersRepository.save(find);
         return token;
       } else {
         console.log('error')
@@ -177,6 +179,17 @@ export class UsersService {
     console.log(find)
     if (find) {
       find.password = hashedPassword
+      await this.usersRepository.save(find);
+      return find
+    } else {
+      return 'error'
+    }
+  }
+
+  async removeToken(email: string) {
+    const find = await this.usersRepository.findOneBy({ email })
+    if (find) {
+      find.token = null
       await this.usersRepository.save(find);
       return find
     } else {
