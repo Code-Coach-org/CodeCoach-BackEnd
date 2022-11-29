@@ -35,9 +35,6 @@ export class User {
     @Column({ type: 'int', comment: '유저 레벨', default: null })
     level: number;
 
-    @OneToMany(() => UserGroup, (userGroup) => userGroup.user)
-    userId: UserGroup[];
-
     @CreateDateColumn({ name: 'create_at', comment: '생성일' })
     createdAt: Date;
 

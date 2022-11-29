@@ -1,15 +1,16 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { UserGroup } from '../../group/entities/userGroup.entity';
-
-@Entity({ name: 'role' })
-export class Role {
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+@Entity({ name: 'banner' })
+export class Banner {
 
     @PrimaryGeneratedColumn('increment')
     @PrimaryColumn({ unsigned: true })
     id: number;
 
-    @Column({ type: 'text', comment: '역할명' })
-    roleName: string;
+    @Column({type: 'varchar', length: 255})
+    image: string
+
+    @Column({ type: 'varchar', length: 500, default: null })
+    link: string
 
     @CreateDateColumn({ name: 'create_at', comment: '생성일' })
     createdAt: Date;

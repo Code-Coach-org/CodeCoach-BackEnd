@@ -6,6 +6,7 @@ import { BoardModule } from './board/board.module';
 import { UsersModule } from './user/user.module';
 import { GroupModule } from './group/group.module';
 import { ConfigModule } from '@nestjs/config';
+import { BannerModule } from './banner/banner.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { ConfigModule } from '@nestjs/config';
     }),
     BoardModule,
     UsersModule,
-    GroupModule],
+    GroupModule,
+    BannerModule],
   controllers: [AppController],
   providers: [AppService],
 })
