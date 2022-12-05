@@ -1,14 +1,21 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res, Req, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { FilesInterceptor } from '@nestjs/platform-express/multer/interceptors/files.interceptor';
 import * as AWS from 'aws-sdk';
 import { UploadedFile } from '@nestjs/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {
+    AWS.config.update({
+      region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
+   }
 
   @Get('/send-email')
   async sendEmail(@Query('email') email: string) {
@@ -86,7 +93,24 @@ export class UsersController {
         massage: '로그인 인증 완료'
       })
     }
+  }
 
+  @Post('logout')
+  async Logout(@Res() res, @Body('email') email:string) {
+    const lg = await this.usersService.removeToken(email)
+    console.log(lg)
+    if (lg === 'error') {
+      return res.json({
+        success: false,
+        statusMessage: '에러 발생'
+      })
+    } else {
+      res.clearCookie('user_auth')
+      return res.json({
+        success: true,
+        statusMessage: '로그아웃 완료'
+      })
+    }
   }
 
   @Get('findAll')
@@ -99,7 +123,7 @@ export class UsersController {
     })
   }
 
-  @Get('/findUser')
+  @Get('findUser')
   async findOne(@Query('id') id: number) {
     const find = await this.usersService.findOne(id);
     return Object.assign({
@@ -109,7 +133,7 @@ export class UsersController {
     })
   }
 
-  @Get('/forgetPassword')
+  @Get('forgetPassword')
   async forgetPassword(@Query('email') email:string) {
     const newPassword = await this.usersService.newPassword(email)
     console.log(newPassword)
@@ -181,15 +205,6 @@ export class UsersController {
   @Post('updateProfile')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Body('id') id:number) {
-    console.log(file)
-    console.log(file.originalname)
-    AWS.config.update({
-      region: process.env.AWS_REGION,
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      },
-    });
     try {
       const find = await this.usersService.findOne(id)
       if (find) {
@@ -214,7 +229,6 @@ export class UsersController {
         })
         }
       } catch (error) {
-      console.log(error);
         return Object.assign({
           success: false,
           err: error,

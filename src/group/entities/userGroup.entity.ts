@@ -8,25 +8,23 @@ export class UserGroup {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @ManyToOne(
-        () => User,
-        (user) => user.userId,
-    )
+    @ManyToOne(type => User, user => user.id)
     @JoinColumn({ name: 'userId' })
     user: User;
 
+    @Column({ nullable: false, unsigned: true })
+    userId: number;
+
     @ManyToOne(
         () => Role,
-        (role) => role.roleId,
+        (role) => role.id,
     )
     @JoinColumn({ name: 'roleId' })
     role: Role;
 
-    @Column({ type: 'int'})
-    roleId: number
+    @Column({ nullable: false, unsigned: true })
+    roleId: number;
 
-    @Column({ type: 'int' })
-    userId: number
 
     @CreateDateColumn({ name: 'create_at', comment: '생성일' })
     createdAt: Date;

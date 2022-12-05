@@ -35,7 +35,7 @@ export class Article {
     })
     view: number;
 
-    @ManyToOne(type => User, user => user.userId)
+    @ManyToOne(type => User, user => user.id)
     @JoinColumn({ name: 'userId' })
     user: User;
 

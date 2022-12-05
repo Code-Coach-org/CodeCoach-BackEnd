@@ -12,7 +12,7 @@ export class BoardRole {
 
     @ManyToOne(
         () => Role,
-        (role) => role.roleId,
+        (role) => role.id,
     )
     @JoinColumn({ name: 'roleId' })
     role: Role;
